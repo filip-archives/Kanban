@@ -1,8 +1,14 @@
-# Kanban
+# Kanban 🎴
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
 
-## Development server
+![Image of Kanban](https://i.imgur.com/U6wrRHr.png)
+
+### Course from fireship.io 🔥
+https://fireship.io/courses/angular/ 
+Learning angular
+
+## Development server 
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
