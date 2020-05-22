@@ -18,12 +18,12 @@ $md-filip: (
   500: #ea9999,
   600: #e79191,
   700: #e48686,
-  800: #e17c7c,
-  900: #db6b6b,
-  A100: #ffffff,
-  A200: #ffffff,
-  A400: #ffeaea,
-  A700: #ffd0d0,
+  800: #ff0404,
+  900: #6aa84f,
+  A100: #b4a7d6,
+  A200: #8e7cc3,
+  A400: #674ea7,
+  A700: #20124d,
   contrast: (
     50: #000000,
     100: #000000,
@@ -33,23 +33,23 @@ $md-filip: (
     500: #000000,
     600: #000000,
     700: #000000,
-    800: #000000,
-    900: #000000,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #ffffff,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
   ),
 );
 
 $Kanban-primary: mat-palette($md-filip);
-$Kanban-accent: mat-palette($md-filip, A200, A100, A400);
+$Kanban-accent: mat-palette($md-filip, A200, A400, A700);
 
 // The warn palette is optional (defaults to red).
-$Kanban-warn: mat-palette($mat-red);
+$Kanban-warn: mat-palette($md-filip, 800);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$Kanban-theme: mat-dark-theme($Kanban-primary, $Kanban-accent, $Kanban-warn);
+$Kanban-theme: mat-light-theme($Kanban-primary, $Kanban-accent, $Kanban-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -63,5 +63,5 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "DM Sans", monospace;
 }

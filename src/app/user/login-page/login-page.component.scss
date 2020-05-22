@@ -1,0 +1,23 @@
+button {
+  img {
+    width: 1.25em;
+  }
+}
+
+:host {
+  text-align: center;
+}
+
+.logout {
+  padding-top: 5em;
+}
+main {
+  min-height: calc(100vh - 9em);
+  background-image: url("/assets/images/blossom.png");
+  background-position-y: center;
+  padding-top: 5em;
+}
+
+div h5 {
+  margin-top: 2em;
+}

@@ -1,6 +1,46 @@
-.container {
+.hero.is-fullheight {
+  min-height: calc(100vh - 4rem);
+}
+
+.hero.is-success {
+  background-image: url("/assets/images/japan.jpg");
+  color: #fff;
+}
+
+.hero {
+  align-items: stretch;
   display: flex;
-  max-width: 400px;
-  margin: auto;
-  padding-top: 3rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-body {
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 3rem 1.5rem;
+}
+
+.hero.is-fullheight .hero-body {
+  align-items: center;
+  display: flex;
+}
+
+.hero.is-fullheight .hero-body > .container {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.hero .title {
+  color: #000;
+  font-size: 3rem;
+}
+.hero .subtitle {
+  color: #000;
+  font-size: 1.8rem;
+}
+
+.start-button {
+  color: #fff;
+  font-size: 1rem;
+  width: auto;
 }
