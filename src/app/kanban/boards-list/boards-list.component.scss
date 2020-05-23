@@ -55,3 +55,8 @@
   padding: 32px;
   height: 350px;
 }
+// boards-list.component.css
+.container {
+  display: flex;
+  flex-direction: row;
+}

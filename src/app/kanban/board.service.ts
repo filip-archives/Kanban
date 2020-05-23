@@ -24,6 +24,37 @@ export class BoardService {
   }
 
   /**
+   * Get all boards owned by current user
+   */
+  getUserBoards() {
+    return this.afAuth.authState.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.db
+            .collection<Board>('boards', (ref) =>
+              ref.where('uid', '==', user.uid).orderBy('priority')
+            )
+            .valueChanges({ idField: 'id' });
+        } else {
+          return [];
+        }
+      })
+      // map(boards => boards.sort((a, b) => a.priority - b.priority))
+    );
+  }
+
+  /**
+   * Run a batch write to change the priority of each board for sorting
+   */
+  sortBoards(boards: Board[]) {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const refs = boards.map((b) => db.collection('boards').doc(b.id));
+    refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
+    batch.commit();
+  }
+
+  /**
    * Delete board
    */
   deleteBoard(boardId: string) {
@@ -50,32 +81,26 @@ export class BoardService {
   }
 
   /**
-   * Get all boards owned by current user
+   *
+   * Move tasks between boards
+   *
+   * @param previousBoardId
+   * @param previousTasks
+   * @param boardId
+   * @param tasks
    */
-  getUserBoards() {
-    return this.afAuth.authState.pipe(
-      switchMap((user) => {
-        if (user) {
-          return this.db
-            .collection<Board>('boards', (ref) =>
-              ref.where('uid', '==', user.uid).orderBy('priority')
-            )
-            .valueChanges({ idField: 'id' });
-        } else {
-          return [];
-        }
-      })
-    );
-  }
-
-  /**
-   * Run a batch write to change the priority of each board for sorting
-   */
-  sortBoards(boards: Board[]) {
+  moveTask(
+    previousBoardId: string,
+    previousTasks: Task[],
+    boardId: string,
+    tasks: Task[]
+  ) {
     const db = firebase.firestore();
     const batch = db.batch();
-    const refs = boards.map((b) => db.collection('boards').doc(b.id));
-    refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
-    batch.commit();
+    const previousRef = db.collection('boards').doc(previousBoardId);
+    const nextRef = db.collection('boards').doc(boardId);
+    batch.update(previousRef, { tasks: previousTasks });
+    batch.update(nextRef, { tasks: tasks });
+    batch.commit().catch((err) => console.error(err));
   }
 }
