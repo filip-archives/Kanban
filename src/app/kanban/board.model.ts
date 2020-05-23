@@ -1,5 +1,13 @@
+export interface Project {
+  id?: string;
+  title?: string;
+  priority?: number;
+  boards?: Board[];
+}
+
 export interface Board {
   id?: string;
+  projectId: string;
   title?: string;
   priority?: number;
   tasks?: Task[];

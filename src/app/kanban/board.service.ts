@@ -3,13 +3,25 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import { switchMap, map } from 'rxjs/operators';
-import { Board, Task } from './board.model';
+import { Project, Board, Task } from './board.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {}
+
+  /**
+   * Create a new project for current user
+   */
+  async createProject(data: Project) {
+    const user = await this.afAuth.currentUser;
+    return this.db.collection('projects').add({
+      ...data,
+      uid: user.uid,
+      Board: [],
+    });
+  }
 
   /**
    * Creates a new board for the current user
@@ -24,15 +36,34 @@ export class BoardService {
   }
 
   /**
+   * Get all user projects
+   */
+  getUserProjects() {
+    return this.afAuth.authState.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.db
+            .collection<Project>('projects', (ref) =>
+              ref.where('uid', '==', user.uid).orderBy('priority')
+            )
+            .valueChanges({ idField: 'id' });
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
+  /**
    * Get all boards owned by current user
    */
-  getUserBoards() {
+  getUserBoards(projectId: string) {
     return this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
           return this.db
             .collection<Board>('boards', (ref) =>
-              ref.where('uid', '==', user.uid).orderBy('priority')
+              ref.where('projectId', '==', projectId).orderBy('priority')
             )
             .valueChanges({ idField: 'id' });
         } else {
@@ -44,6 +75,17 @@ export class BoardService {
   }
 
   /**
+   * Run a batch to change the priority of each project for sorting
+   */
+  sortProjects(projects: Project[]) {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const refs = projects.map((p) => db.collection('projects').doc(p.id));
+    refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
+    batch.commit();
+  }
+
+  /**
    * Run a batch write to change the priority of each board for sorting
    */
   sortBoards(boards: Board[]) {
@@ -52,6 +94,13 @@ export class BoardService {
     const refs = boards.map((b) => db.collection('boards').doc(b.id));
     refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
     batch.commit();
+  }
+
+  /**
+   * Delete project
+   */
+  deleteProject(projectId: string) {
+    return this.db.collection('projects').doc(projectId).delete();
   }
 
   /**

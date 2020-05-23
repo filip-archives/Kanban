@@ -7,17 +7,17 @@ import { CustomerDataService } from '../customer-data.service';
 @Component({
   selector: 'app-list-page',
   templateUrl: './list-page.component.html',
-  styleUrls: ['./list-page.component.scss']
+  styleUrls: ['./list-page.component.scss'],
 })
 export class ListPageComponent implements OnInit {
   customers;
 
-  constructor(private seo: SeoService, private db: AngularFirestore, public data: CustomerDataService) {}
+  constructor(private seo: SeoService, public data: CustomerDataService) {}
 
   ngOnInit() {
     this.seo.generateTags({
       title: 'Customer List',
-      description: 'A list filled with customers'
+      description: 'A list filled with customers',
     });
 
     // this.customers = this.db.collection('customers').valueChanges({ idField: 'id' });

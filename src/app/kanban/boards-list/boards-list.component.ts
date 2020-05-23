@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog.component';
 import { Board } from '../board.model';
 import { BoardService } from '../board.service';
+import { ProjectDataService } from '../project-list/project-data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-boards-list',
@@ -14,12 +16,20 @@ import { BoardService } from '../board.service';
 export class BoardsListComponent implements OnInit, OnDestroy {
   boards: Board[];
   sub: Subscription;
+  projectId: string;
 
-  constructor(public boardService: BoardService, public dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    public boardService: BoardService,
+    public dialog: MatDialog,
+    private project: ProjectDataService
+  ) {}
 
   ngOnInit() {
+    this.projectId = this.route.snapshot.paramMap.get('id');
+
     this.sub = this.boardService
-      .getUserBoards()
+      .getUserBoards(this.projectId)
       .subscribe((boards) => (this.boards = boards));
   }
 
@@ -38,6 +48,7 @@ export class BoardsListComponent implements OnInit, OnDestroy {
       if (result) {
         this.boardService.createBoard({
           title: result,
+          projectId: this.projectId,
           priority: this.boards.length,
         });
       }

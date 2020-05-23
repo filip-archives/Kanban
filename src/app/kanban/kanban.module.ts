@@ -12,13 +12,17 @@ import { FormsModule } from '@angular/forms';
 import { BoardDialogComponent } from './dialogs/board-dialog.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TaskDialogComponent } from './dialogs/task-dialog.component';
+import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectDialogComponent } from './dialogs/project-dialog.component';
 
 @NgModule({
   declarations: [
     BoardsListComponent,
     BoardComponent,
     BoardDialogComponent,
-    TaskDialogComponent
+    TaskDialogComponent,
+    ProjectListComponent,
+    ProjectDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +34,10 @@ import { TaskDialogComponent } from './dialogs/task-dialog.component';
     MatDialogModule,
     MatButtonToggleModule,
   ],
-  entryComponents: [BoardDialogComponent, TaskDialogComponent]
+  entryComponents: [
+    ProjectListComponent,
+    BoardDialogComponent,
+    TaskDialogComponent,
+  ],
 })
 export class KanbanModule {}

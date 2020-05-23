@@ -1,0 +1,31 @@
+<h1>Projects</h1>
+
+<mat-nav-list role="list">
+  <h3 mat-subheader>A list of your projects</h3>
+
+  <mat-list-item
+    *ngFor="let project of projects"
+    [routerLink]="project.id"
+    role="listitem"
+  >
+    <mat-icon mat-list-icon>account_box</mat-icon>
+    <h3>{{ project.title }}</h3>
+  </mat-list-item>
+</mat-nav-list>
+<div
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  class="projects"
+  (cdkDropListDropped)="drop($event)"
+>
+  <div class="project-button">
+    <button
+      mat-raised-button
+      color="accent"
+      cdkDragDisabled
+      (click)="openProjectDialog()"
+    >
+      New Projects
+    </button>
+  </div>
+</div>
