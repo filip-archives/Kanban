@@ -1,4 +1,4 @@
-.boards {
+.boards .container {
   width: auto;
   padding: 24px;
   display: flex;
@@ -54,9 +54,4 @@
   width: 300px;
   padding: 32px;
   height: 350px;
-}
-// boards-list.component.css
-.container {
-  display: flex;
-  flex-direction: row;
 }
